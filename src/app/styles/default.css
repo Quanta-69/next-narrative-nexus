@@ -7,6 +7,6 @@
     @apply bg-background text-foreground;
   }
   h1{
-    @apply text-6xl text-center font-bold text-amber-500
+    @apply text-4xl text-center font-bold text-amber-500
   }
 }
