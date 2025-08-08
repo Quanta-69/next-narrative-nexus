@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +8,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <h1>Narrative Nexus</h1>
-      <Button variant={"secondary"} size={"lg"} >Hello Narratives</Button>
+      <h1>Narrative Nexus Home Page</h1>
     </>);
 }

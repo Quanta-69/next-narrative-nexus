@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function signupPage() {
   return (
     <>
-      <h1>Create your fucking account and read books!</h1>
+      <h1>Create an account to read books!</h1>
       <SignUpComp />
     </>
   );
