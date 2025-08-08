@@ -8,12 +8,12 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Define your public routes here using createRouteMatcher for better type safety and matching.
 const isPublicRoute = createRouteMatcher([
-  "/",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/api/clerk-webhook",
-  "/api/stripe(.*)",
-  "/books(.*)",
+  "/", // The main homepage.
+  "/sign-in(.*)", // All paths under /sign-in.
+  "/sign-up(.*)", // All paths under /sign-up.
+  "/api/clerk-webhook", // Critical: Clerk webhook endpoint must be public.
+  "/api/stripe(.*)", // Stripe API routes (checkout, webhooks) must be public.
+  "/books(.*)", // Allow public viewing of general book listings.
 ]);
 
 // This is the main Clerk authentication middleware function.
@@ -22,8 +22,11 @@ export default clerkMiddleware(
   async (auth: ClerkMiddlewareAuth, req: NextRequest) => {
     const pathname = req.nextUrl.pathname;
 
-    // Call auth() to get the authentication data
-    const { userId, redirectToSignIn, sessionClaims } = await auth();
+    // IMPORTANT FIX: Call auth() as a function and await its result.
+    // This is necessary because ClerkMiddlewareAuth is of type AuthFn,
+    // which means 'auth' itself is a function that needs to be invoked
+    // to get the authentication object containing userId, user, etc.
+    const { userId, user, redirectToSignIn } = await auth();
 
     // --- Step 1: Handle Unauthenticated Access to Protected Routes ---
     if (!userId && !isPublicRoute(req)) {
@@ -32,8 +35,10 @@ export default clerkMiddleware(
 
     // --- Step 2: Implement Role-Based Authorization for Dashboard Routes ---
     if (userId && pathname.startsWith("/dashboard")) {
-      // @ts-expect-error - Clerk types are inconsistent
-      const userRole: string | undefined = sessionClaims?.publicMetadata?.role;
+      // Access publicMetadata from the 'user' object.
+      const userRole: string | undefined = user?.publicMetadata?.role as
+        | string
+        | undefined;
 
       const generalDashboardPaths = [
         "/dashboard",

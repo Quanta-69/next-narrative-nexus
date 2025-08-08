@@ -10,8 +10,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       {" "}
+      <Navbar />
       <html lang="en">
-        <Navbar/>
         <body>{children}</body>
       </html>
     </ClerkProvider>

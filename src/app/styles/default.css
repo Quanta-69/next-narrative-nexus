@@ -9,4 +9,7 @@
   h1{
     @apply text-4xl text-center font-bold text-amber-500
   }
+  .boku{
+    @apply text-3xl font-bold
+  }
 }

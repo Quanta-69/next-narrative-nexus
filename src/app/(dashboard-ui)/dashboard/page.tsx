@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function dashboardPage() {
     return (
         <>
-            <h1>I wonder what is wrong</h1>
+            <h1>Dashboard Overview</h1>
         </>
     )
 }
