@@ -95,7 +95,7 @@ export function Navbar() {
             <>
               <li>
                 <Link
-                  href="/sign-in"
+                  href="/login"
                   className="text-gray-300 hover:text-purple-400 transition-colors"
                 >
                   Sign In
@@ -103,7 +103,7 @@ export function Navbar() {
               </li>
               <li>
                 <Link
-                  href="/sign-up"
+                  href="/signup"
                   className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition-colors shadow-md"
                 >
                   Sign Up

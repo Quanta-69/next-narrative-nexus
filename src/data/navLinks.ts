@@ -20,13 +20,13 @@ export const navLinks = [
   {
     id: "buy-coins",
     name: "Buy Coins",
-    path: "/buy-coins",
+    path: "/purchase-coins",
     icon: "💰",
   },
   {
     id: "profile",
     name: "Profile",
-    path: "/profile",
+    path: "/dashboard",
     icon: "👤",
   },
   {
