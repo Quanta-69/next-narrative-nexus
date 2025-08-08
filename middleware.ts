@@ -21,9 +21,9 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(
   async (auth: ClerkMiddlewareAuth, req: NextRequest) => {
     const pathname = req.nextUrl.pathname;
-    // Access userId, user, and redirectToSignIn directly from the 'auth' object received by the middleware.
-    // There's no need to call auth() again here or await it as a separate step for these properties.
-    const { userId, user, redirectToSignIn } = auth;
+
+    // Call auth() to get the authentication data
+    const { userId, redirectToSignIn, sessionClaims } = await auth();
 
     // --- Step 1: Handle Unauthenticated Access to Protected Routes ---
     if (!userId && !isPublicRoute(req)) {
@@ -32,7 +32,8 @@ export default clerkMiddleware(
 
     // --- Step 2: Implement Role-Based Authorization for Dashboard Routes ---
     if (userId && pathname.startsWith("/dashboard")) {
-      const userRole = user?.publicMetadata?.role as string | undefined;
+      // @ts-expect-error - Clerk types are inconsistent
+      const userRole: string | undefined = sessionClaims?.publicMetadata?.role;
 
       const generalDashboardPaths = [
         "/dashboard",
