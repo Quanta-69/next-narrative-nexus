@@ -1,0 +1,38 @@
+/* My styles for this website */
+:root {
+  --color-primary: #dc2626; /* red-600 */
+  --color-secondary: #ea580c; /* orange-600 */
+  --color-accent: #f97316; /* orange-500 */
+  --color-light: #ffffff; /* white */
+  --color-dark: #1f2937; /* gray-800 */
+}
+
+section{
+
+}
+section.full{
+
+}
+section.half{
+
+}
+.wrapper{
+
+}
+.sect-details{
+    .sect-titles{
+        span{}
+    }
+    .sect-subtitle{
+
+    }
+}
+.btn-wrap{
+
+}
+.card-wrap{
+
+}
+.card{
+
+}

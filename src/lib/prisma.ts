@@ -12,7 +12,7 @@ const prisma =
   global.prisma ||
   new PrismaClient({
     log: ["query", "info", "warn", "error"], // Log database queries and other events
-  });
+  }); // <-- This closing bracket was missing
 
 // In development, store the PrismaClient instance on the global object
 // so it's not re-instantiated on every hot reload.

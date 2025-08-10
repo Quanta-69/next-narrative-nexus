@@ -10,11 +10,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"; // Assuming your Shadcn UI components are here
+} from "@/components/pages/homePage/NewsLetter/ui/sidebar";
 
 import Link from "next/link"; // For Next.js client-side navigation
 import { usePathname } from "next/navigation"; // To highlight the active link
-import { UserButton } from "@clerk/nextjs"; // For Clerk's user management button
 
 import { sidebarLinks } from "@/data/dashboardSidebarLinks"; // Import your external link data
 
@@ -42,7 +41,7 @@ export function SidebarComp({ userRole }: SidebarCompProps) {
               {filteredLinks.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   {" "}
-                  {/* Use item.id as key for uniqueness */} 
+                  {/* Use item.id as key for uniqueness */}
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
@@ -65,10 +64,6 @@ export function SidebarComp({ userRole }: SidebarCompProps) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      {/* User profile / Logout at the bottom of the sidebar, typical for dashboards */}
-      <div className="mt-auto p-4 border-t border-gray-700 flex items-center justify-center">
-        <UserButton afterSignOutUrl="/" />
-      </div>
     </Sidebar>
   );
 }

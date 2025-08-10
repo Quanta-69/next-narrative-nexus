@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { SignUpComp } from "@/components/auth";
+import { SignUpComp } from "@/components/pages/authPage";
 
 export const metadata: Metadata = {
   title: "Sign Up | Narrative Nexus",

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { LoginComp } from "@/components/auth";
+import { LoginComp } from "@/components/pages/authPage";
 
 export const metadata: Metadata = {
   title: "Login | Narrative Nexus",
@@ -13,5 +13,4 @@ export default function loginPage() {
       <LoginComp />
     </>
   );
-  
 }
