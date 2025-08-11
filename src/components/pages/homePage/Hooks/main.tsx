@@ -2,9 +2,12 @@ import { HookCard } from "./hook-card";
 
 export function HookSection() {
     return (
-        <>
-            <HookCard/>
-            <h1>Hooks Section</h1>
+    <>
+            <div className="wrapper">
+                <div className="card-wrap">
+                    <HookCard/>
+                </div>
+            </div>
         </>
     )
 }

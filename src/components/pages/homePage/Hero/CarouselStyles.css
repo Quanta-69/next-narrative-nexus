@@ -1,0 +1,86 @@
+/* Main carousel container */
+.embla {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Carousel viewport */
+.embla__viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Carousel container */
+.embla__container {
+  display: flex;
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Individual slide items - responsive sizing */
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Responsive breakpoints for slide sizing */
+@media (min-width: 640px) {
+  .embla__slide {
+    flex: 0 0 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .embla__slide {
+    flex: 0 0 33.333%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .embla__slide {
+    flex: 0 0 25%;
+  }
+}
+
+/* Carousel container styling */
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Navigation buttons */
+.carousel-container button {
+  transition: all 0.2s ease;
+}
+
+/* Prevent content flickering during animation */
+.embla__slide * {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Responsive adjustments for transition timing */
+@media (max-width: 768px) {
+  .embla__container {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .embla__container {
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+@media (min-width: 1025px) {
+  .embla__container {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}

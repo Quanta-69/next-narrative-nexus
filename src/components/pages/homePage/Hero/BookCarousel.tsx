@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DynamicCard from "./BookCard";
 import Autoplay from "embla-carousel-autoplay";
+import "./CarouselStyles.css";
 
 interface Book {
   id: string;
@@ -14,11 +15,12 @@ interface Book {
   rating?: number;
   pricePerChapter?: number;
   readUrl?: string;
+  tags?: string[];
 }
 
 interface ResponsiveBookCarouselProps {
   books: Book[];
-  title?: string;
+  title: string;
   autoSlide?: boolean;
   autoSlideInterval?: number;
   className?: string;
@@ -26,7 +28,6 @@ interface ResponsiveBookCarouselProps {
 
 export default function ResponsiveBookCarousel({
   books,
-  title,
   autoSlide = true,
   autoSlideInterval = 3000,
   className = "",
@@ -65,22 +66,11 @@ export default function ResponsiveBookCarousel({
 
   return (
     <div className={`w-full ${className}`}>
-      {title && (
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-[var(--color-primary)]">
-            {title}
-          </h2>
-        </div>
-      )}
-
-      <div className="relative">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
+      <div className="carousel-container">
+        <div className="embla overflow-hidden" ref={emblaRef}>
+          <div className="embla__container">
             {books.map((book) => (
-              <div
-                key={book.id}
-                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] xl:flex-[0_0_25%] px-2"
-              >
+              <div key={book.id} className="embla__slide px-2">
                 <DynamicCard
                   title={book.title}
                   author={book.author}
@@ -88,13 +78,13 @@ export default function ResponsiveBookCarousel({
                   rating={book.rating}
                   pricePerChapter={book.pricePerChapter}
                   readUrl={book.readUrl}
+                  tags={book.tags}
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Navigation Buttons */}
         <button
           className={`absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[var(--color-primary)] p-2 rounded-full z-10 shadow-md transition-all ${
             prevBtnEnabled ? "opacity-100" : "opacity-50 cursor-not-allowed"

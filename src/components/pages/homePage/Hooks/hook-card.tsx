@@ -1,7 +1,18 @@
-export function HookCard() {
-    return (
-        <>
-            <h1>I am a Hook</h1>
-        </>
-    )
-} 
+interface HookCardProps {
+  label: string;
+  value: string | number;
+  className?: string;
+}
+
+export function HookCard({
+  label,
+  value,
+  className = "",
+}: HookCardProps) {
+  return (
+    <div className={`card hook-card ${className}`}>
+      <p>{label}</p>
+      <h1>{value}</h1>
+    </div>
+  );
+}

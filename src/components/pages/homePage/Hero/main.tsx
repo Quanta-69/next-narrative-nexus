@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Carousel from "./BookCarousel";
-import { BookIcon, Pen, Flame } from "lucide-react";
+import { BookIcon, Pen} from "lucide-react";
 
 export function HeroSection() {
   const featuredBooks = [
@@ -48,7 +48,6 @@ export function HeroSection() {
   return (
     <section className="full">
       <div className="wrapper">
-        <p className="section-tip"> <Flame/> Fearured this week</p>
         <div className="sect-details">
           <h1 className="sect-title">
             Discover Your Next <br /> <span>Romance Adventure</span>

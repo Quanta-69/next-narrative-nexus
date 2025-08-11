@@ -1,36 +1,6 @@
 import { Metadata } from "next";
-import { HeroSection } from "@/components/pages/homePage/index";
-const romanceEmojis = [ "💕",
-  "💖",
-  "💗",
-  "💓",
-  "💝",
-  "💘",
-  "💞",
-  "💌",
-  "💟",
-  "❤️",
-  "🧡",
-  "💛",
-  "💚",
-  "💙",
-  "💜",
-  "🤍",
-  "🖤",
-  "🤎",
-  "💏",
-  "💑",
-  "👩‍❤️‍👨",
-  "👩‍❤️‍👩",
-  "👨‍❤️‍👨",
-  "💋",
-  "🥰",
-  "😍",
-  "🤗",
-  "😘",
-  "😚",
-  "😙",
-];
+import { HeroSection, HookSection } from "@/components/pages/homePage/index";
+const romanceEmojis = [ "💕","💖","💗","💓","💝","💘","💞","❤️","🧡","💛","💚","💙","💜","🤍","🖤","🤎","💋","🥰","😍","🤗","😘","😚","😙",];
 
 export const metadata: Metadata = {
   title: `Narrative Nexus`,
@@ -57,6 +27,7 @@ export default function Home() {
         ))}
       </div>
       <HeroSection />
+      <HookSection/>
     </>
   );
 }
