@@ -1,65 +1,83 @@
 import Link from "next/link";
-import BookCarousel from "./BookCarousel";
+import { Button } from "@/components/ui/button";
+import Carousel from "./BookCarousel";
+import { BookIcon, Pen, Flame } from "lucide-react";
 
 export function HeroSection() {
-    const featuredBooks = [
-      {
-        id: "1",
-        title: "Sweet Nothings",
-        author: "Honey Bee",
-        coverImageUrl:
-          "https://hd.wallpaperswide.com/thumbs/blonde_girl_fashion_model_sunglasses-t1.jpg",
-        tags: ["Sweet Romance"],
-      },
-      {
-        id: "2",
-        title: "Eternal Hearts",
-        author: "Isabella Rose",
-        coverImageUrl:
-          "https://hd.wallpaperswide.com/thumbs/blonde_girl_fashion_model_sunglasses-t1.jpg",
-        tags: ["Paranormal"],
-      },
+  const featuredBooks = [
+    {
+      id: "1",
+      title: "Eternal Hearts",
+      author: "Isabella Rose",
+      coverImageUrl: "/images/motivational_book.jpg",
+      tags: ["Paranormal"],
+      price:"40"
+    },
+    {
+      id: "2",
+      title: "Sweet Nothings",
+      author: "Honey Bee",
+      coverImageUrl: "/images/book.jpg",
+      tags: ["Sweet Romance"],
+    },
+    {
+      id: "3",
+      title: "Eternal Hearts",
+      author: "Isabella Rose",
+      coverImageUrl: "/images/motivational_book.jpg",
+      tags: ["Paranormal"],
+    },
+    {
+      id: "4",
+      title: "Sweet Nothings",
+      author: "Honey Bee",
+      coverImageUrl: "/images/book.jpg",
+      tags: ["Sweet Romance"],
+    },
+    {
+      id: "5",
+      title: "Good Life",
+      author: "Quantoxt Briggs",
+      coverImageUrl: "/images/motivational_book.jpg",
+      tags:[""]
+    }
 
-      // Add more books as needed
-    ];
+    // Add more books as needed
+  ];
   
   return (
-    <section className="custom-section-padding bg-gradient-to-r from-red-50 to-orange-50 full">
-      <div className="custom-container">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="custom-section-title">
-            Discover Your Next <br />{" "}
-            <span className="text-[var(--color-primary)]">
-              Romance Adventure
-            </span>
+    <section className="full">
+      <div className="wrapper">
+        <p className="section-tip"> <Flame/> Fearured this week</p>
+        <div className="sect-details">
+          <h1 className="sect-title">
+            Discover Your Next <br /> <span>Romance Adventure</span>
           </h1>
-          <p className="custom-section-description mb-8">
+          <p className="sect-subtitle">
             {" "}
-            Immerse yourself in a world of passion, desire, and heartfelt
-            connections. From sweet contemporary romances to steamy historical
-            tales, we have the perfect story for every mood.
+            Curated romance that flirts, teases, and delivers the swoon. From
+            slow-burn aches to off-the-charts spice, we publish stories that
+            leave you breathless and reaching for one more chapter.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              href="/categories/all"
-              className="custom-btn custom-btn-primary"
-            >
-              Explore Books
-            </Link>
-            <Link
-              href="/author-application"
-              className="custom-btn custom-btn-outline"
-            >
-              Become an Author
-            </Link>
-          </div>
         </div>
+        <div className="btn-wrap">
+          <Button size={"lg"}>
+            <Link href="/categories/all">Explore Books</Link>
+            <BookIcon className="text-white w-6 h-6" />
+          </Button>
+
+          <Button size={"lg"} variant={"secondary"}>
+            <Link href="/author-application">Become an Author</Link>
+            <Pen className="w-6 h-6"></Pen>
+          </Button>
+        </div>
+        <Carousel
+          books={featuredBooks}
+          title="Featured Books"
+          autoSlide={true}
+          autoSlideInterval={4000}
+        />
       </div>
-      <BookCarousel
-        books={featuredBooks}
-        title="Featured This Week"
-        className="mt-8"
-      />
     </section>
   );
 }

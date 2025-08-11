@@ -1,20 +1,22 @@
-// src/components/ui/BookCarousel.tsx
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import BookComponent from "@/components/ui/BookComponent";
+import DynamicCard from "./BookCard";
+import Autoplay from "embla-carousel-autoplay";
 
 interface Book {
   id: string;
   title: string;
   author: string;
   coverImageUrl: string;
-  tags?: string[];
+  rating?: number;
+  pricePerChapter?: number;
+  readUrl?: string;
 }
 
-interface BookCarouselProps {
+interface ResponsiveBookCarouselProps {
   books: Book[];
   title?: string;
   autoSlide?: boolean;
@@ -22,13 +24,21 @@ interface BookCarouselProps {
   className?: string;
 }
 
-export default function BookCarousel({
+export default function ResponsiveBookCarousel({
   books,
+  title,
   autoSlide = true,
   autoSlideInterval = 3000,
   className = "",
-}: BookCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+}: ResponsiveBookCarouselProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+    },
+    [Autoplay({ delay: autoSlideInterval, stopOnInteraction: false })]
+  );
+
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
 
@@ -53,17 +63,15 @@ export default function BookCarousel({
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  useEffect(() => {
-
-    const autoSlide = setInterval(() => {
-      emblaApi.scrollNext();
-    }, autoSlideInterval);
-    if (!autoSlide || !emblaApi) return;
-    return () => clearInterval(autoSlide);
-  }, [autoSlide, autoSlideInterval, emblaApi]);
-
   return (
     <div className={`w-full ${className}`}>
+      {title && (
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-[var(--color-primary)]">
+            {title}
+          </h2>
+        </div>
+      )}
 
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
@@ -71,18 +79,15 @@ export default function BookCarousel({
             {books.map((book) => (
               <div
                 key={book.id}
-                className="flex-[0_0_40%] md:flex-[0_0_25%] px-2"
+                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] xl:flex-[0_0_25%] px-2"
               >
-                <BookComponent
-                  id={book.id}
+                <DynamicCard
                   title={book.title}
                   author={book.author}
                   coverImageUrl={book.coverImageUrl}
-                  tags={book.tags}
-                  showAuthor={true}
-                  showRating={true}
-                  showPrice={true}
-                  showDescription={false}
+                  rating={book.rating}
+                  pricePerChapter={book.pricePerChapter}
+                  readUrl={book.readUrl}
                 />
               </div>
             ))}
@@ -91,14 +96,18 @@ export default function BookCarousel({
 
         {/* Navigation Buttons */}
         <button
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full z-10"
+          className={`absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[var(--color-primary)] p-2 rounded-full z-10 shadow-md transition-all ${
+            prevBtnEnabled ? "opacity-100" : "opacity-50 cursor-not-allowed"
+          }`}
           onClick={scrollPrev}
           disabled={!prevBtnEnabled}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full z-10"
+          className={`absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[var(--color-primary)] p-2 rounded-full z-10 shadow-md transition-all ${
+            nextBtnEnabled ? "opacity-100" : "opacity-50 cursor-not-allowed"
+          }`}
           onClick={scrollNext}
           disabled={!nextBtnEnabled}
         >
