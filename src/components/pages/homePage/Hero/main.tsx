@@ -1,7 +1,33 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Carousel from "./BookCarousel";
-import { BookIcon, Pen} from "lucide-react";
+import { BookIcon, Pen } from "lucide-react";
+const romanceEmojis = [
+  "💕",
+  "💖",
+  "💗",
+  "💓",
+  "💝",
+  "💘",
+  "💞",
+  "❤️",
+  "🧡",
+  "💛",
+  "💚",
+  "💙",
+  "💜",
+  "🤍",
+  "🖤",
+  "🤎",
+  "💋",
+  "🥰",
+  "😍",
+  "🤗",
+  "😘",
+  "😚",
+  "😙",
+];
+
 
 export function HeroSection() {
   const featuredBooks = [
@@ -47,6 +73,22 @@ export function HeroSection() {
   
   return (
     <section className="full">
+      <div className=" inset-0 pointer-events-none overflow-hidden z-10">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-red-500  opacity-100 animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              fontSize: `${Math.random() * 20 + 25}px`,
+            }}
+          >
+            {romanceEmojis[Math.floor(Math.random() * romanceEmojis.length)]}
+          </div>
+        ))}
+      </div>
       <div className="wrapper">
         <div className="sect-details">
           <h1 className="sect-title">

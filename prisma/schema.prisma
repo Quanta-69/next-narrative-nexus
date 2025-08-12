@@ -8,19 +8,19 @@ datasource db {
 }
 
 model authors {
-  id                 String   @id
   bio                String?
   website_url        String?
   social_media_links Json?
   created_at         DateTime @default(now()) @db.Timestamptz(6)
   updated_at         DateTime @default(now()) @db.Timestamptz(6)
-  profiles           profiles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  name               String?
+  id                 String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   books              books[]
 }
 
 model books {
   id                       String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  author_id                String
+  author_id                String             @db.Uuid
   category_id              String?            @db.Uuid
   title                    String
   description              String?
@@ -30,9 +30,10 @@ model books {
   published_at             DateTime?          @db.Timestamptz(6)
   created_at               DateTime           @default(now()) @db.Timestamptz(6)
   updated_at               DateTime           @default(now()) @db.Timestamptz(6)
-  bookshelves_book_id      String?            @db.Uuid
-  reading_sessions_book_id String?            @db.Uuid
-  authors                  authors            @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bookshelves_book_id      String?            @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reading_sessions_book_id String?            @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug                     String?
+  authors                  authors            @relation(fields: [author_id], references: [id], onDelete: SetNull)
   categories               categories?        @relation(fields: [category_id], references: [id], onUpdate: NoAction)
   bookshelves              bookshelves[]
   chapters                 chapters[]
@@ -46,6 +47,7 @@ model categories {
   description String?
   created_at  DateTime @default(now()) @db.Timestamptz(6)
   updated_at  DateTime @default(now()) @db.Timestamptz(6)
+  slug        String   @unique @default("all")
   books       books[]
 }
 
@@ -74,89 +76,90 @@ model coin_transactions {
   amount            Int
   related_entity_id String?               @db.Uuid
   created_at        DateTime              @default(now()) @db.Timestamptz(6)
-  profiles          profiles              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model profiles {
-  id                       String                 @id
-  username                 String?                @unique
-  email                    String?                @unique
-  avatar_url               String?
-  coin_balance             Int                    @default(0)
-  role                     String                 @default("user")
-  created_at               DateTime               @default(now()) @db.Timestamptz(6)
-  updated_at               DateTime               @default(now()) @db.Timestamptz(6)
-  bookshelves_user_id      String?
-  notifications_user_id    String?
-  reading_sessions_user_id String?
-  authors                  authors?
-  bookshelves              bookshelves[]
-  coin_transactions        coin_transactions[]
-  notifications            notifications[]
-  reading_sessions         reading_sessions[]
-  reviews                  reviews[]
-  user_chapter_unlocks     user_chapter_unlocks[]
+  username                                                   String?                @unique
+  email                                                      String?                @unique
+  avatar_url                                                 String?
+  coin_balance                                               Int                    @default(0)
+  role                                                       String                 @default("user")
+  created_at                                                 DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at                                                 DateTime               @default(now()) @db.Timestamptz(6)
+  bookshelves_user_id                                        String?                @db.Uuid
+  notifications_user_id                                      String?                @db.Uuid
+  reading_sessions_user_id                                   String?                @db.Uuid
+  id                                                         String                 @id @unique @db.Uuid
+  notifications                                              notifications[]
+  profiles_profiles_bookshelves_user_idToprofiles            profiles?              @relation("profiles_bookshelves_user_idToprofiles", fields: [bookshelves_user_id], references: [id], onDelete: Cascade)
+  other_profiles_profiles_bookshelves_user_idToprofiles      profiles[]             @relation("profiles_bookshelves_user_idToprofiles")
+  profiles_profiles_notifications_user_idToprofiles          profiles?              @relation("profiles_notifications_user_idToprofiles", fields: [notifications_user_id], references: [id], onDelete: Cascade)
+  other_profiles_profiles_notifications_user_idToprofiles    profiles[]             @relation("profiles_notifications_user_idToprofiles")
+  profiles_profiles_reading_sessions_user_idToprofiles       profiles?              @relation("profiles_reading_sessions_user_idToprofiles", fields: [reading_sessions_user_id], references: [id], onDelete: Cascade)
+  other_profiles_profiles_reading_sessions_user_idToprofiles profiles[]             @relation("profiles_reading_sessions_user_idToprofiles")
+  reading_sessions                                           reading_sessions[]
+  reviews                                                    reviews[]
+  user_chapter_unlocks                                       user_chapter_unlocks[]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model reviews {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   book_id    String   @db.Uuid
-  user_id    String
+  user_id    String   @db.Uuid
   rating     Int
   comment    String?
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
   books      books    @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  profiles   profiles @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  profiles   profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([book_id, user_id])
 }
 
 model user_chapter_unlocks {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id     String
+  user_id     String   @db.Uuid
   chapter_id  String   @db.Uuid
   unlocked_at DateTime @default(now()) @db.Timestamptz(6)
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   chapters    chapters @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  profiles    profiles @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  profiles    profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, chapter_id])
 }
 
 model bookshelves {
-  id         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id    String
   book_id    String        @db.Uuid
   status     shelf_status? @default(READING)
   added_at   DateTime?     @default(now()) @db.Timestamptz(6)
   updated_at DateTime?     @default(now()) @db.Timestamptz(6)
+  id         String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   books      books         @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  profiles   profiles      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([user_id, book_id])
 }
 
 model notifications {
   id       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id  String
+  user_id  String            @db.Uuid
   type     notification_type
   message  String
   is_read  Boolean?          @default(false)
   sent_at  DateTime?         @default(now()) @db.Timestamptz(6)
-  profiles profiles          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  profiles profiles          @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 model reading_sessions {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String
+  user_id    String    @db.Uuid
   book_id    String    @db.Uuid
   chapter_id String    @db.Uuid
   started_at DateTime? @default(now()) @db.Timestamptz(6)
   ended_at   DateTime? @db.Timestamptz(6)
   books      books     @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   chapters   chapters  @relation(fields: [chapter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  profiles   profiles  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  profiles   profiles  @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum book_status {

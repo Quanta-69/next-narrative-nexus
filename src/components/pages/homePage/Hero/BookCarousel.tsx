@@ -9,7 +9,7 @@ import "./CarouselStyles.css";
 
 interface Book {
   id: string;
-  title: string;
+  title?: string;
   author: string;
   coverImageUrl: string;
   rating?: number;
